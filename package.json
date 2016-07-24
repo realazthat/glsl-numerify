@@ -1,0 +1,17 @@
+{
+  "name": "glsl-numerify",
+  "version": "0.1.0",
+  "description": "glsl-numerify is a debugging shader generator for WebGL: given a texture, blows it up in size, displays the pixel values as numbers.",
+  "author": "Azriel Fasten",
+  "license": "MIT",
+  "standard": {
+    "ignore": [
+      "dist/*",
+      "www/*"
+    ]
+  },
+  "dependencies": {
+    "regl": "^0.10.0",
+    "resl": "^1.0.1"
+  }
+}
