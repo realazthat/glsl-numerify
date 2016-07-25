@@ -32,11 +32,15 @@ Basically, it makes a cell for each input pixel.
 * resl (for demo)
 * budo (for quick demo as an alternative to running browserify) 
 
+
+####Demo
+
 To run the demo, run:
 
 ```
     cd ./glsl-numerify
     
+    #install npm dependencies
     npm install
     
     #browser should open with the demo
@@ -47,3 +51,27 @@ To run the demo, run:
 
 ```
 
+####Usage
+
+```
+const numerify = require('./glsl-numerify.js');
+```
+
+##### `numerify.makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component='r'})`
+
+
+* returns the webgl 1.0 fragment shader to use.
+* `multiplier`
+    1. the source texture is typically treated as a normalized floating point value between [0,1] in the shader.
+    2. therefore, to get at the "real" value, you can supply a multiplier. So for example having a multiplier of
+        256 will result values in the range [0,255]. The output values will always be integer only, so this
+        typically needs to be used.
+* `sourceSize` - a string in the form of a glsl vec2 with the source texture's size in pixels.
+* `destinationCellSize` - a string in the form of a glsl vec2 with the size of each cell within the destination texture.
+* `destinationSize` - the actual size of the destination texture; it might be exactly the same as
+                      `sourceSize X destinationCellSize`.
+* `component` - Which component of the input texture you are interested in rendering as digits.
+
+##### `numerify.makeVert ()`
+
+* returns the webgl 1.0 vertex shader to use.
