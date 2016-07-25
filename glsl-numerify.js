@@ -7,14 +7,15 @@ function makeVert () {
     varying vec2 vUv;
     
     void main() {
-      vUv = uv;
+      // vUv = uv;
+      vUv = position.xy / 2.0 + .5;
       gl_Position = vec4(position, 1);
     }
   `;
   return vert;
 }
 
-function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize}) {
+function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component='r'}) {
   let frag = `
     precision highp float;
     varying vec2 vUv;
@@ -29,6 +30,9 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
     const vec2 destination_view_size = ${sourceSize} * ${destinationCellSize};
     const vec4 multiplier = vec4(${multiplier});
     void main () {
+      // gl_FragColor = texture2D(source_texture, vUv);
+      // gl_FragColor = vec4(vUv, 0,1);
+      // return;
 
       highp vec2 screen_rel_pixel = floor(vUv*destination_size);
       highp vec2 screen_rel_cell = floor(screen_rel_pixel / destination_cell_size);
@@ -38,6 +42,10 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
       highp vec2 cell_rel_offset_pixel = screen_rel_pixel - screen_rel_cell_lower_pixel;
 
       highp vec2 source_uv = (screen_rel_cell + .5)/source_size;
+
+      // gl_FragColor = vec4(vUv,0,1);
+      // gl_FragColor = texture2D(source_texture, vUv);
+      // return;
 
       gl_FragColor = vec4(1,1,1,1);
 
@@ -61,7 +69,7 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
       int cell_rel_digit_bottom_y = int((destination_cell_size.y / 2.0) + digit_size.y / 2.0);
       int cell_rel_dist_from_digit_bottom = cell_rel_digit_bottom_y - int(cell_rel_offset_pixel.y);
 
-      int sigdigits = int(floor(denormed_source_value.r / pow(10.0, float(digit_index))));
+      int sigdigits = int(floor(denormed_source_value.${component} / pow(10.0, float(digit_index))));
       if (sigdigits == 0)
           return;
       int digit = int(mod(float(sigdigits), 10.0));
@@ -70,7 +78,7 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
 
 
       float cell_top_border = floor((destination_cell_size.y - digit_size.y) / 2.0);
-      digits_uv = (vec2((digit*int(digit_size.x)) + digit_rel_x, destination_cell_size.y - cell_top_border - cell_rel_offset_pixel.y) + vec2(.5))/digit_texture_size;
+      digits_uv = (vec2((digit*int(digit_size.x)) + digit_rel_x,  cell_rel_offset_pixel.y - cell_top_border) + vec2(.5))/digit_texture_size;
 
       gl_FragColor.rg = digits_uv;
       gl_FragColor = texture2D(digits_texture, digits_uv);

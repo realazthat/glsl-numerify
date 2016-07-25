@@ -12,10 +12,6 @@ const quadVerts = [
   [-1.0, -1.0, 0.0], [-1.0, 1.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0]
 ];
 
-const quadUVs = [
-  [0.0, 1.0], [0.0, 0.0], [1.0, 1.0], [1.0, 0.0]
-];
-
 const quadIndices = [
   [3, 1, 0], [0, 2, 3]
 ];
@@ -23,11 +19,11 @@ const quadIndices = [
 const quadVertexShader = `
   precision mediump float;
   attribute vec3 position;
-  attribute vec2 uv;
   varying vec2 vUv;
   
   void main() {
-    vUv = uv;
+    vUv = position.xy/2.0 + .5;
+    vUv.y = 1.0 - vUv.y;
     gl_Position = vec4(position, 1);
   }
 `;
@@ -55,6 +51,19 @@ function makeFBORgbUint8 ({width, height}) {
   });
 }
 
+
+const drawToScreen = regl({
+  frag: quadFragShader,
+  vert: quadVertexShader,
+  attributes: {
+    position: quadVerts
+  },
+  elements: quadIndices,
+  uniforms: {
+    tex: regl.prop('texture')
+  }
+});
+
 resl({
   manifest: {
     texture: {
@@ -80,9 +89,6 @@ resl({
     console.log(digits_texture.width);
 
 
-
-
-
     let fbo = makeFBORgbUint8({width: texture.width * 16, height: texture.height * 16});
 
     let frag = numerify.makeFrag({ multiplier: 256,
@@ -91,14 +97,14 @@ resl({
                                     destinationCellSize: 'vec2(16, 16)'});
     let vert = numerify.makeVert();
 
-    console.log(frag);
+    console.log('vert:',vert);
+    console.log('frag:',frag);
 
     const drawToDestination = regl({
       frag: frag,
       vert: vert,
       attributes: {
-        position: quadVerts,
-        uv: quadUVs
+        position: quadVerts
       },
       elements: quadIndices,
       uniforms: {
@@ -112,18 +118,6 @@ resl({
                         digits_texture: digits_texture,
                         fbo: fbo});
 
-    const drawToScreen = regl({
-      frag: quadFragShader,
-      vert: quadVertexShader,
-      attributes: {
-        position: quadVerts,
-        uv: quadUVs
-      },
-      elements: quadIndices,
-      uniforms: {
-        tex: regl.prop('texture')
-      }
-    });
     drawToScreen({texture: fbo.color[0]});
   }
 });
