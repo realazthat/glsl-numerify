@@ -51,7 +51,6 @@ function makeFBORgbUint8 ({width, height}) {
   });
 }
 
-
 const drawToScreen = regl({
   frag: quadFragShader,
   vert: quadVertexShader,
@@ -88,7 +87,6 @@ resl({
     console.log(texture.width);
     console.log(digits_texture.width);
 
-
     let fbo = makeFBORgbUint8({width: texture.width * 16, height: texture.height * 16});
 
     let frag = numerify.makeFrag({ multiplier: 256,
@@ -97,8 +95,8 @@ resl({
                                     destinationCellSize: 'vec2(16, 16)'});
     let vert = numerify.makeVert();
 
-    console.log('vert:',vert);
-    console.log('frag:',frag);
+    console.log('vert:', vert);
+    console.log('frag:', frag);
 
     const drawToDestination = regl({
       frag: frag,

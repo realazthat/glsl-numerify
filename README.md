@@ -65,7 +65,7 @@ To run the demo, run:
 const numerify = require('./glsl-numerify.js');
 ```
 
-##### `numerify.makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component='r'})`
+##### `numerify.makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component = 'r'})`
 
 
 * returns the webgl 1.0 fragment shader to use.

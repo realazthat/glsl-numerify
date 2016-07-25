@@ -15,7 +15,7 @@ function makeVert () {
   return vert;
 }
 
-function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component='r'}) {
+function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component = 'r'}) {
   let frag = `
     precision highp float;
     varying vec2 vUv;
