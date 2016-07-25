@@ -10,6 +10,14 @@ displays the pixel values as numbers.
 
 See `glsl-numerify-demo.js` for usage.
 
+####Example results
+
+##### **Source texture, 4x4 (then scaled up)**:
+![Example source texture](https://raw.githubusercontent.com/realazthat/glsl-numerify/master/docs/numerify-4x4-exemplar-scaled-up.png)
+
+##### **Result, 256x256 (then scaled up)**:
+![Result texture](https://raw.githubusercontent.com/realazthat/glsl-numerify/master/docs/numerify-4x4-result.png)
+
 ####How it works
 
 Basically, it makes a cell for each input pixel.
