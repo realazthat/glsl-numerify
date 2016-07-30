@@ -2,16 +2,49 @@
   "name": "glsl-numerify",
   "version": "0.1.0",
   "description": "glsl-numerify is a debugging shader generator for WebGL: given a texture, blows it up in size, displays the pixel values as numbers.",
+  "main": "glsl-numerify.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realazthat/glsl-numerify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/realazthat/glsl-numerify/issues"
+  },
   "author": "Azriel Fasten",
   "license": "MIT",
-  "standard": {
+  "semistandard": {
     "ignore": [
       "dist/*",
       "www/*"
     ]
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "disc": "^1.3.2",
+    "glsl-quad": "0.1.0",
+    "indexhtmlify": "^1.3.0",
     "regl": "^0.10.0",
-    "resl": "^1.0.1"
+    "resl": "^1.0.1",
+    "semistandard": "~8.0.0",
+    "snazzy": "^4.0.0"
+  },
+  "keywords": [
+    "webgl",
+    "gl",
+    "graphics",
+    "computer graphics",
+    "opengl",
+    "glsl",
+    "data",
+    "debugging",
+    "shader",
+    "image processing"
+  ],
+  "scripts": {
+    "mytest": "semistandard | snazzy",
+    "build": "npm run build-script && npm run build-demo",
+    "build-script": "mkdir -p ./dist && browserify glsl-numerify.js --standalone glsl-numerify > ./dist/glsl-numerify.js",
+    "build-demo": "mkdir -p ./www/glsl-numerify-demo/ && browserify ./glsl-numerify-demo.js | indexhtmlify > ./www/glsl-numerify-demo/index.html"
   }
+
 }
