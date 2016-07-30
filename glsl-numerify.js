@@ -2,14 +2,14 @@
 function makeVert () {
   let vert = `
     precision mediump float;
-    attribute vec3 position;
-    attribute vec2 uv;
-    varying vec2 vUv;
+    attribute vec2 a_position;
+    attribute vec2 a_uv;
+    uniform float u_clip_y;
+    varying vec2 v_uv;
     
     void main() {
-      // vUv = uv;
-      vUv = position.xy / 2.0 + .5;
-      gl_Position = vec4(position, 1);
+      v_uv = a_uv;
+      gl_Position = vec4(a_position * vec2(1,u_clip_y), 0, 1);
     }
   `;
   return vert;
@@ -18,23 +18,26 @@ function makeVert () {
 function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize, component = 'r'}) {
   let frag = `
     precision highp float;
-    varying vec2 vUv;
+    varying vec2 v_uv;
     uniform sampler2D digits_texture;
     uniform sampler2D source_texture;
 
+    // width of 4. 4 = 3 pixels for the digit, one pixel for white space.
     const vec2 digit_size = vec2(4,7);
+    // hardcoded expected size in pixels of the digits texture.
     const vec2 digit_texture_size = vec2(64, 64);
+    // the size, in pixels, of the source texture.
     const vec2 source_size = ${sourceSize};
+    // the size of each cell in the destination texture.
     const vec2 destination_cell_size = ${destinationCellSize};
+    // the size of the destination texture.
     const vec2 destination_size = ${destinationSize};
+    // the size required for displaying the source image, given the destination cell size.
     const vec2 destination_view_size = ${sourceSize} * ${destinationCellSize};
     const vec4 multiplier = vec4(${multiplier});
     void main () {
-      // gl_FragColor = texture2D(source_texture, vUv);
-      // gl_FragColor = vec4(vUv, 0,1);
-      // return;
 
-      highp vec2 screen_rel_pixel = floor(vUv*destination_size);
+      highp vec2 screen_rel_pixel = floor(v_uv*destination_size);
       highp vec2 screen_rel_cell = floor(screen_rel_pixel / destination_cell_size);
       highp vec2 screen_rel_cell_lower_pixel = screen_rel_cell * destination_cell_size;
       highp vec2 screen_rel_cell_upper_pixel = screen_rel_cell_lower_pixel + destination_cell_size;
@@ -43,9 +46,6 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
 
       highp vec2 source_uv = (screen_rel_cell + .5)/source_size;
 
-      // gl_FragColor = vec4(vUv,0,1);
-      // gl_FragColor = texture2D(source_texture, vUv);
-      // return;
 
       gl_FragColor = vec4(1,1,1,1);
 
@@ -78,13 +78,24 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
 
 
       float cell_top_border = floor((destination_cell_size.y - digit_size.y) / 2.0);
-      digits_uv = (vec2((digit*int(digit_size.x)) + digit_rel_x,  cell_rel_offset_pixel.y - cell_top_border) + vec2(.5))/digit_texture_size;
+      // digits_uv = (vec2((digit*int(digit_size.x)) + digit_rel_x,  destination_cell_size.y -  cell_top_border - cell_rel_offset_pixel.y) + vec2(.5))/digit_texture_size;
+      digits_uv = (vec2((digit*int(digit_size.x)) + digit_rel_x, cell_rel_offset_pixel.y - cell_top_border) + vec2(.5))/digit_texture_size;
 
-      gl_FragColor.rg = digits_uv;
       gl_FragColor = texture2D(digits_texture, digits_uv);
     }
   `;
   return frag;
 }
 
-module.exports = { makeFrag: makeFrag, makeVert: makeVert };
+const dataUri = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACq
+                 aXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAAB
+                 J0Ad5mH3gAAADaSURBVHhe7ZTBCcJAFAUtxKNNeLP/XsQSVgzvh7C4GjR7mhkI
+                 w8/PQhhCTg3OEuB+vqzXlpr7/bu5d7//Z57JGmDrYu88ctHPxbfzo3NH8jHA43
+                 pb/Lpf1xFzMdr380x2fQGjFxk9X/Tnf93P5JB/QDHa93Oxdz+TJQAZA8RYDBBj
+                 MUCMxQAxFgPEWAwQYzFAjMUAMRYDxFgMEGMxQIzFADEWA8RYDBBjMUCMxQAxFg
+                 PEWAwQYzFAjMUAMRYDxFgMEGMxQIzFADEWA8RYDBBjMUCMxQAxFniA1p4Bvgzd
+                 SrofxgAAAABJRU5ErkJggg==`
+                    .replace(' ', '').replace('\n', '').replace('\r', '');
+const digits = {uri: dataUri};
+
+module.exports = { makeFrag: makeFrag, makeVert: makeVert, digits };
