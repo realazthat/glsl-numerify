@@ -63,8 +63,8 @@ Results:
 
 branch | demo
 -------|-------
-master | [glsl-quad-demo](https://realazthat.github.io/glsl-quad/master/www/glsl-numerify-demo/index.html)
-develop | [glsl-quad-demo](https://realazthat.github.io/glsl-quad/develop/www/glsl-numerify-demo/index.html)
+master | [glsl-numerify-demo](https://realazthat.github.io/glsl-numerify/master/www/glsl-numerify-demo/index.html)
+develop | [glsl-numerify-demo](https://realazthat.github.io/glsl-numerify/develop/www/glsl-numerify-demo/index.html)
 
 ####Usage
 
