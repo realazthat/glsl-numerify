@@ -259,6 +259,37 @@ const fshader = `
   }
 `;
 
+const showUVsFshader = `
+  precision mediump float;
+  varying vec2 v_uv;
+  void main () {
+    gl_FragColor = vec4(v_uv,0,1);
+  }
+`;
+
+
+const showPositionsVshader = `
+  precision mediump float;
+  attribute vec2 a_position;
+
+  uniform float u_clip_y;
+
+  varying vec2 v_uv;
+  
+  void main() {
+    gl_Position = vec4(a_position * vec2(1,u_clip_y), 0, 1);
+    v_uv = gl_Position.xy;
+  }
+`;
+
+const showPositionsFshader = `
+  precision mediump float;
+  varying vec2 v_uv;
+  void main () {
+    gl_FragColor = vec4(v_uv,0,1);
+  }
+`;
+
 const directionsDataUri = `
 data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAA
 BACAIAAAAlC+aJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQ
@@ -270,13 +301,18 @@ DY9Lq7eW6Mjk29/Bk/YD+vO7Bc/D/rKULAqSbj80tHrOehPC9mjY
 /krhkBeBF4HvZE6CgXRJgeW3wAPYMf0IwO1NO/RL2BhgJMCvApwK
 QAnwJMCvApwKQAnwJMCvApwNQGYE/vmRowbCgUYLpbQHvJMi8gSN
 TpmLsGxGWsH9Aq90gwfW1gwv9zx+qUr0mWD8hCps/uE5DSC/pgVD
-kvIARVAAAAAElFTkSuQmCC`.replace(' ', '').replace('\n', '').replace('\r', '');
+kvIARVAAAAAElFTkSuQmCC`.replace(/\s*/g, '');
 
 const bitmaps = {
   directions: {uri: directionsDataUri}
 };
 
-module.exports = {verts, indices, uvs, shader: {vert: vshader, frag: fshader}, bitmaps};
+module.exports = {verts, indices, uvs, shader: {vert: vshader, frag: fshader},
+                  show: {
+                    uvs: {frag: showUVsFshader, vert: vshader},
+                    positions: {frag: showPositionsFshader, vert: showPositionsVshader}
+                  },
+                  bitmaps};
 
 },{}],4:[function(require,module,exports){
 var GL_FLOAT = 5126
