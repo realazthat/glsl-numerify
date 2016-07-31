@@ -88,15 +88,14 @@ function makeFrag ({multiplier, sourceSize, destinationCellSize, destinationSize
   return frag;
 }
 
-const dataUri = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACq
-                 aXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAAB
-                 J0Ad5mH3gAAADaSURBVHhe7ZTBCcJAFAUtxKNNeLP/XsQSVgzvh7C4GjR7mhkI
-                 w8/PQhhCTg3OEuB+vqzXlpr7/bu5d7//Z57JGmDrYu88ctHPxbfzo3NH8jHA43
-                 pb/Lpf1xFzMdr380x2fQGjFxk9X/Tnf93P5JB/QDHa93Oxdz+TJQAZA8RYDBBj
-                 MUCMxQAxFgPEWAwQYzFAjMUAMRYDxFgMEGMxQIzFADEWA8RYDBBjMUCMxQAxFg
-                 PEWAwQYzFAjMUAMRYDxFgMEGMxQIzFADEWA8RYDBBjMUCMxQAxFniA1p4Bvgzd
-                 SrofxgAAAABJRU5ErkJggg==`
-                    .replace(' ', '').replace('\n', '').replace('\r', '');
+const dataUri = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqa
+                 XHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0
+                 Ad5mH3gAAADPSURBVHhe7ZRBCsMwEMT6kB77/5/1DSktsyEsMTVtfJIEjlg2vuj
+                 g2wbHADEWA8RYDBBjMUCMxQAxFgPEWAwQYzFAjMUAMRYDxFgMEGMxQIzFADEWA8
+                 RYDBBjMUCMxQAxFgPEWAwQYzFAjMUAMRYDxFgMEGMxQIzFADEWA8RYDBBjMUCMx
+                 QDvz/P+2M+Rmvv+bO7u+3/mlewBji5m55GLPhff7o/uXclUgLfrXDEXo32fVzId
+                 4IzR/0W//+t+JZe8AcVo3+didr+STwAu2/YCo1QMoniycvMAAAAASUVORK5CYII
+                 =`.replace(/\s*/g, '');
 const digits = {uri: dataUri};
 
 module.exports = { makeFrag: makeFrag, makeVert: makeVert, digits };
