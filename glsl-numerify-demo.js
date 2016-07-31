@@ -45,7 +45,8 @@ resl({
       parser: (data) => regl.texture({
         data: data,
         mag: 'nearest',
-        min: 'nearest'
+        min: 'nearest',
+        flipY: true
       })
     }, digitsTexture: {
       type: 'image',
@@ -53,7 +54,8 @@ resl({
       parser: (data) => regl.texture({
         data: data,
         mag: 'nearest',
-        min: 'nearest'
+        min: 'nearest',
+        flipY: true
       })
     }
   },
@@ -93,6 +95,6 @@ resl({
                     fbo: fbo,
                     clip_y: 1});
 
-    drawToScreen({texture: fbo.color[0], clip_y: -1});
+    drawToScreen({texture: fbo.color[0], clip_y: 1});
   }
 });
