@@ -59,6 +59,13 @@ To run the demo, run:
 
 ```
 
+Results:
+
+branch | demo
+-------|-------
+master | [glsl-quad-demo](https://realazthat.github.io/glsl-quad/master/www/glsl-numerify-demo/index.html)
+develop | [glsl-quad-demo](https://realazthat.github.io/glsl-quad/develop/www/glsl-numerify-demo/index.html)
+
 ####Usage
 
 ```
